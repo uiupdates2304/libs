@@ -727,6 +727,7 @@ do -- ESP Functions
 end
 
 -- China Hat
+--[[
 for i = 1, 30 do
     ESP.China_Hat[i] = {Framework:Draw('Line', {Visible = false}), Framework:Draw('Triangle', {Visible = false})}
     ESP.China_Hat[i][1].ZIndex = 2;
@@ -734,6 +735,7 @@ for i = 1, 30 do
     ESP.China_Hat[i][2].ZIndex = 1;
     ESP.China_Hat[i][2].Filled = true;
 end
+]]
 
 -- Render Connection
 local Connection = RunService.RenderStepped:Connect(function()
@@ -743,6 +745,7 @@ local Connection = RunService.RenderStepped:Connect(function()
     end
 
     -- China Hat
+--[[
     local China_Hat_Settings = ESP.Settings.China_Hat
     if ESP.Settings.China_Hat.Enabled then
         local China_Hat = ESP.China_Hat
@@ -771,6 +774,7 @@ local Connection = RunService.RenderStepped:Connect(function()
             end
         end
     end
+]]
 end)
 
 return ESP, Connection, Framework
