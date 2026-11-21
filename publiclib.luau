@@ -554,6 +554,7 @@ do -- Player Metatable
                     end
 
                     Tracer.To = Vector2.new(HRP_Position.X, HRP_Position.Y)
+                    Tracer.Color = TracerSettings.Color
                     Tracer.Visible = TracerSettings.Enabled
                 else
                     Box.Visible = false
@@ -695,7 +696,7 @@ do -- ESP Functions
         Components.HealthBold = Framework:Draw("Text", {Font = 2, Size = 13, Center = true})
         Components.Chams = _G.chamsEnabled == true and Framework:Instance("Highlight", {Parent = CoreGui, DepthMode = Enum.HighlightDepthMode.AlwaysOnTop}) or true
         Components.Image = Framework:Draw("Image", {Data = self.Settings.Image.Raw})
-        Components.Tracer = Framework:Draw("Line", {Visible = false})
+        Components.Tracer = Framework:Draw("Line", {Visible = false, Thickness = 2})
         self.Objects[Instance] = Object
         return Object
     end
