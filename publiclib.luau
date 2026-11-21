@@ -96,7 +96,8 @@ local ESP; ESP = {
         Health = {Enabled = false, Position = "Right", Transparency = 0, OutlineColor = Color3.new(0, 0, 0)},
         Chams = {Enabled = false, Color = Color3.new(1, 1, 1), Mode = "Visible", OutlineColor = Color3.new(0, 0, 0), Transparency = 0.5, OutlineTransparency = 0},
         Image = {Enabled = false, Image = "Taxi", Raw = Images.Taxi},
-        China_Hat = {Enabled = false, Color = Color3.new(1, 1, 1), Transparency = 0.5, Height = 0.5, Radius = 1, Offset = 1}
+        China_Hat = {Enabled = false, Color = Color3.new(1, 1, 1), Transparency = 0.5, Height = 0.5, Radius = 1, Offset = 1},
+        Tracer = {Enabled = false, Color = Color3.new(1, 1, 1), Top = Vector2.new(Camera.ViewportSize.X / 2, 0), Bottom = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y), Opt = "Bottom"}
     },
     Objects = {},
     Overrides = {},
@@ -240,6 +241,7 @@ do -- Player Metatable
         local Health, HealthBold = self.Components.Health, self.Components.HealthBold
         local Chams = _G.chamsEnabled == true and self.Components.Chams or true
         local Image = self.Components.Image
+        local Tracer = self.Components.Tracer
         if Box == nil or Box_Outline == nil or Healthbar == nil or Healthbar_Outline == nil or Name == nil or NameBold == nil or Distance == nil or DistanceBold == nil or Tool == nil or ToolBold == nil or Health == nil or HealthBold == nil or Chams == nil then
             self:Destroy()
         end
@@ -263,6 +265,7 @@ do -- Player Metatable
                     Chams.Enabled = false
                 end
                 Image.Visible = false
+                Tracer.Visible = false
                 return
             end
             local Current_Health, Health_Maximum = ESP:Get_Health(self.Player), Humanoid.MaxHealth
@@ -541,6 +544,17 @@ do -- Player Metatable
                             Chams.OutlineTransparency = Chams_Settings.OutlineTransparency
                         end
                     end
+
+                    local TracerSettings = ESP.Settings.Tracer
+
+                    if TracerSettings.Opt == "Bottom" then
+                       Tracer.From = TracerSettings.Bottom
+                    else
+                       Tracer.From = TracerSettings.Top
+                    end
+
+                    Tracer.To = Vector2.new(HRP_Position.X, HRP_Position.Y)
+                    Tracer.Visible = TracerSettings.Enabled
                 else
                     Box.Visible = false
                     Box_Outline.Visible = false
@@ -558,6 +572,7 @@ do -- Player Metatable
                         Chams.Enabled = false
                     end
                     Image.Visible = false
+                    Tracer.Visible = false
                     return
                 end
             else
@@ -577,6 +592,7 @@ do -- Player Metatable
                     Chams.Enabled = false
                 end
                 Image.Visible = false
+                Tracer.Visible = false
                 return
             end
         else
@@ -596,6 +612,7 @@ do -- Player Metatable
                 Chams.Enabled = false
             end
             Image.Visible = false
+            Tracer.Visible = false
             return
         end
     end
@@ -678,6 +695,7 @@ do -- ESP Functions
         Components.HealthBold = Framework:Draw("Text", {Font = 2, Size = 13, Center = true})
         Components.Chams = _G.chamsEnabled == true and Framework:Instance("Highlight", {Parent = CoreGui, DepthMode = Enum.HighlightDepthMode.AlwaysOnTop}) or true
         Components.Image = Framework:Draw("Image", {Data = self.Settings.Image.Raw})
+        Components.Tracer = Framework:Draw("Line", {Visible = false})
         self.Objects[Instance] = Object
         return Object
     end
